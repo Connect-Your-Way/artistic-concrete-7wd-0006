@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================================================
+   THREE-LAYER TOKEN SYSTEM
+   Layer 1 (primitive) — raw values on systematic scales.
+   Layer 2 (semantic)  — purpose aliases that reference primitives.
+   Layer 3 (component) — component-scoped tokens (see components/ui/*).
+   Nothing downstream uses raw hex/px; everything resolves through these tokens.
+   Colours are stored as HSL channels so Tailwind can apply an alpha channel.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* ---- Layer 1: PRIMITIVES ------------------------------------------- */
+
+    /* Concrete grey ramp (warm, industrial) */
+    --grey-50: 40 14% 97%;
+    --grey-100: 38 10% 93%;
+    --grey-200: 36 8% 86%;
+    --grey-300: 32 6% 75%;
+    --grey-400: 28 5% 58%;
+    --grey-500: 26 5% 44%;
+    --grey-600: 24 6% 33%;
+    --grey-700: 220 8% 20%;
+    --grey-800: 218 10% 14%;
+    --grey-900: 220 12% 9%;
+    --white: 0 0% 100%;
+
+    /* Safety-orange accent ramp */
+    --orange-300: 28 94% 68%;
+    --orange-400: 26 92% 60%;
+    --orange-500: 22 89% 51%;
+    --orange-600: 19 87% 45%;
+    --orange-700: 17 85% 39%;
+
+    /* Spacing scale (4px base) — semantic aliases below reference these */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-24: 6rem;
+
+    /* Radius scale */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+
+    /* Shadow scale */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--grey-900) / 0.06);
+    --shadow-md: 0 4px 12px -2px hsl(var(--grey-900) / 0.12);
+    --shadow-lg: 0 12px 28px -6px hsl(var(--grey-900) / 0.18);
+    --shadow-xl: 0 24px 48px -12px hsl(var(--grey-900) / 0.28);
+
+    /* Motion */
+    --duration-base: 180ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ---- Layer 2: SEMANTIC --------------------------------------------- */
+    --color-background: var(--grey-50);
+    --color-foreground: var(--grey-900);
+
+    --color-surface: var(--white);
+    --color-surface-raised: var(--white);
+
+    --color-muted: var(--grey-100);
+    --color-muted-foreground: var(--grey-600);
+
+    --color-border: var(--grey-200);
+    --color-input: var(--grey-300);
+    --color-ring: var(--orange-500);
+
+    --color-primary: var(--orange-500);
+    --color-primary-hover: var(--orange-600);
+    --color-primary-active: var(--orange-700);
+    --color-primary-foreground: var(--white);
+
+    --color-secondary: var(--grey-800);
+    --color-secondary-hover: var(--grey-700);
+    --color-secondary-foreground: var(--grey-50);
+
+    --color-accent: var(--orange-500);
+    --color-accent-foreground: var(--white);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display font-bold tracking-tight;
+    text-wrap: balance;
+  }
+
+  /* Global, consistent visible focus treatment (2px ring + 2px offset). */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Respect reduced-motion preferences. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Section rhythm — generous vertical spacing, mobile-first. */
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-primary;
+  }
+
+  /* Subtle industrial texture overlay for dark bands. */
+  .texture-overlay {
+    background-image:
+      linear-gradient(hsl(var(--grey-900) / 0.82), hsl(var(--grey-900) / 0.88)),
+      var(--texture-image);
+    background-size: cover;
+    background-position: center;
+  }
+}
